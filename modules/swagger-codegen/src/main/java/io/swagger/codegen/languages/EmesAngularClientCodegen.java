@@ -28,9 +28,9 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
     public static final String NPM_REPOSITORY = "npmRepository";
     public static final String SNAPSHOT = "snapshot";
     public static final String WITH_INTERFACES = "withInterfaces";
-    public static final String TAGGED_UNIONS ="taggedUnions";
+    public static final String TAGGED_UNIONS = "taggedUnions";
     public static final String NG_VERSION = "ngVersion";
-    public static final String PROVIDED_IN_ROOT ="providedInRoot";
+    public static final String PROVIDED_IN_ROOT = "providedInRoot";
 
     protected String npmName = null;
     protected String npmVersion = "6.9.0";
@@ -50,8 +50,8 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
         apiPackage = "api";
         modelPackage = "model";
 
-        this.cliOptions.add(new CliOption(NPM_NAME, "The name under which you want to publish generated npm package." +
-                " Required to generate a full angular package"));
+        this.cliOptions.add(new CliOption(NPM_NAME, "The name under which you want to publish generated npm package."
+                + " Required to generate a full angular package"));
         this.cliOptions.add(new CliOption(NPM_VERSION, "The version of your npm package. Default is '6.9.0'"));
         this.cliOptions.add(new CliOption(NPM_REPOSITORY,
                 "Use this property to set an url your private npmRepo in the package.json"));
@@ -62,11 +62,11 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
                 "Setting this property to true will generate interfaces next to the default class implementations.",
                 BooleanProperty.TYPE).defaultValue(Boolean.FALSE.toString()));
         this.cliOptions.add(new CliOption(TAGGED_UNIONS,
-            "Use discriminators to create tagged unions instead of extending interfaces.",
-            BooleanProperty.TYPE).defaultValue(Boolean.FALSE.toString()));
+                "Use discriminators to create tagged unions instead of extending interfaces.", BooleanProperty.TYPE)
+                        .defaultValue(Boolean.FALSE.toString()));
         this.cliOptions.add(new CliOption(PROVIDED_IN_ROOT,
-            "Use this property to provide Injectables in root (it is only valid in angular version greater or equal to 6.0.0).",
-            BooleanProperty.TYPE).defaultValue(Boolean.TRUE.toString()));
+                "Use this property to provide Injectables in root (it is only valid in angular version greater or equal to 6.0.0).",
+                BooleanProperty.TYPE).defaultValue(Boolean.TRUE.toString()));
         this.cliOptions.add(new CliOption(NG_VERSION, "The version of Angular. Default is '4.3'"));
     }
 
@@ -95,7 +95,6 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
                 .add(new SupportingFile("apis.mustache", apiPackage().replace('.', File.separatorChar), "api.ts"));
         supportingFiles.add(new SupportingFile("index.mustache", getIndexDirectory(), "index.ts"));
         supportingFiles.add(new SupportingFile("api.module.mustache", getIndexDirectory(), "api.module.ts"));
-        supportingFiles.add(new SupportingFile("configuration.mustache", getIndexDirectory(), "configuration.ts"));
         supportingFiles.add(new SupportingFile("variables.mustache", getIndexDirectory(), "variables.ts"));
         supportingFiles.add(new SupportingFile("encoder.mustache", getIndexDirectory(), "encoder.ts"));
         supportingFiles.add(new SupportingFile("gitignore", "", ".gitignore"));
@@ -128,7 +127,7 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
         }
 
         if (additionalProperties.containsKey(PROVIDED_IN_ROOT) && !ngVersion.atLeast("6.0.0")) {
-            additionalProperties.put(PROVIDED_IN_ROOT,false);
+            additionalProperties.put(PROVIDED_IN_ROOT, false);
         }
 
         additionalProperties.put(NG_VERSION, ngVersion);
@@ -137,7 +136,8 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
         additionalProperties.put("useHttpClient", ngVersion.atLeast("4.3.0"));
         additionalProperties.put("useRxJS6", ngVersion.atLeast("6.0.0"));
         if (!ngVersion.atLeast("4.3.0")) {
-            supportingFiles.add(new SupportingFile("rxjs-operators.mustache", getIndexDirectory(), "rxjs-operators.ts"));
+            supportingFiles
+                    .add(new SupportingFile("rxjs-operators.mustache", getIndexDirectory(), "rxjs-operators.ts"));
         }
     }
 
@@ -162,20 +162,24 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
         }
 
         // for Angular 2 AOT support we will use good-old ngc,
-        // Angular Package format wasn't invented at this time and building was much more easier
+        // Angular Package format wasn't invented at this time and building was much
+        // more easier
         if (!ngVersion.atLeast("4.0.0")) {
-            LOGGER.warn("Please update your legacy Angular " + ngVersion + " project to benefit from 'Angular Package Format' support.");
+            LOGGER.warn("Please update your legacy Angular " + ngVersion
+                    + " project to benefit from 'Angular Package Format' support.");
             additionalProperties.put("useNgPackagr", false);
         } else {
             additionalProperties.put("useNgPackagr", true);
             supportingFiles.add(new SupportingFile("ng-package.mustache", getIndexDirectory(), "ng-package.json"));
         }
 
-        // Libraries generated with v1.x of ng-packagr will ship with AoT metadata in v3, which is intended for Angular v4.
-        // Libraries generated with v2.x of ng-packagr will ship with AoT metadata in v4, which is intended for Angular v5 (and Angular v6).
+        // Libraries generated with v1.x of ng-packagr will ship with AoT metadata in
+        // v3, which is intended for Angular v4.
+        // Libraries generated with v2.x of ng-packagr will ship with AoT metadata in
+        // v4, which is intended for Angular v5 (and Angular v6).
         additionalProperties.put("useOldNgPackagr", !ngVersion.atLeast("5.0.0"));
 
-        //Files for building our lib
+        // Files for building our lib
         supportingFiles.add(new SupportingFile("package.mustache", getIndexDirectory(), "package.json"));
         supportingFiles.add(new SupportingFile("typings.mustache", getIndexDirectory(), "typings.json"));
         supportingFiles.add(new SupportingFile("tsconfig.mustache", getIndexDirectory(), "tsconfig.json"));
@@ -201,7 +205,6 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
             return super.getTypeDeclaration(p);
         }
     }
-
 
     @Override
     public String getSwaggerType(Property p) {
@@ -280,7 +283,8 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
                 }
             }
 
-            // Prep a string buffer where we're going to set up our new version of the string.
+            // Prep a string buffer where we're going to set up our new version of the
+            // string.
             StringBuilder pathBuffer = new StringBuilder();
             StringBuilder parameterName = new StringBuilder();
             int insideCurly = 0;
@@ -319,8 +323,14 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
                 }
             }
 
-            // Overwrite path to TypeScript template string, after applying everything we just did.
+            // Overwrite path to TypeScript template string, after applying everything we
+            // just did.
+            //TODO: 提取到 extends CodegenOperation实现
+            String[] paths = op.path.split("/");
+
+            op.nickname = camelize(paths[paths.length - 1], true);
             op.path = pathBuffer.toString();
+
         }
 
         // Add additional filename information for model imports in the services
@@ -335,12 +345,13 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
 
     /**
      * Finds and returns a path parameter of an operation by its name
+     * 
      * @param operation
      * @param parameterName
      * @return
      */
     private CodegenParameter findPathParameterByName(CodegenOperation operation, String parameterName) {
-        for(CodegenParameter param : operation.pathParams) {
+        for (CodegenParameter param : operation.pathParams) {
             if (param.baseName.equals(parameterName)) {
                 return param;
             }
@@ -400,7 +411,8 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
         if (name.length() == 0) {
             return "DefaultService";
         }
-        return initialCaps(name) + "Service";
+        String srvName = initialCaps(name);
+        return srvName.endsWith("Service") ? srvName : srvName + "Service";
     }
 
     @Override
@@ -408,7 +420,13 @@ public class EmesAngularClientCodegen extends AbstractTypeScriptClientCodegen {
         if (name.length() == 0) {
             return "default.service";
         }
-        return camelize(name, true) + ".service";
+        String srvFileName = camelize(name, true);
+        if (srvFileName.endsWith("Service")) {
+            Integer index = srvFileName.lastIndexOf("Service");
+            srvFileName = srvFileName.substring(0, index);
+        }
+
+        return srvFileName + ".service";
     }
 
     @Override
